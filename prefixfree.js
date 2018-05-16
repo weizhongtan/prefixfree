@@ -4,13 +4,13 @@
  * MIT license
  */
 
-(function(){
+var StyleFix = (function(){
 
 if(!window.addEventListener) {
 	return;
 }
 
-var self = window.StyleFix = {
+var self = {
 	link: function(link) {
 		var url = link.href || link.getAttribute('data-href');
 		try {
@@ -131,7 +131,7 @@ var self = window.StyleFix = {
 
 		// Inline styles
 		$('[style]').forEach(StyleFix.styleAttribute);
-		
+
 		var event = document.createEvent('Event');
 		event.initEvent('StyleFixProcessed', true, true);
 		document.dispatchEvent(event);
@@ -177,14 +177,16 @@ function $(expr, con) {
 	return [].slice.call((con || document).querySelectorAll(expr));
 }
 
+return self;
+
 })();
 
 /**
  * PrefixFree
  */
-(function(root){
+var PrefixFree = (function(root, StyleFix){
 
-if(!window.StyleFix || !window.getComputedStyle) {
+if(!StyleFix || !window.getComputedStyle) {
 	return;
 }
 
@@ -201,7 +203,7 @@ function fix(what, before, after, replacement, css) {
 	return css;
 }
 
-var self = window.PrefixFree = {
+var self = {
 	prefixCSS: function(css, raw, element) {
 		var prefix = self.prefix;
 
@@ -523,5 +525,8 @@ root.className += ' ' + self.prefix;
 
 StyleFix.register(self.prefixCSS);
 
+return self;
 
-})(document.documentElement);
+})(document.documentElement, StyleFix);
+
+module.exports = PrefixFree;
