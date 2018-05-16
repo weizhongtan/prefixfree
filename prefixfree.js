@@ -4,13 +4,13 @@
  * MIT license
  */
 
-var StyleFix = (function(){
+var StyleFix = (function(StyleFix){
 
 if(!window.addEventListener) {
 	return;
 }
 
-var self = {
+var self = StyleFix = {
 	link: function(link) {
 		var url = link.href || link.getAttribute('data-href');
 		try {
